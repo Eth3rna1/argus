@@ -10,9 +10,6 @@ use rdev::{
 use std::sync::Arc;
 use std::sync::RwLock;
 
-//use std::cell::RefCell;
-use std::io::Result;
-//use std::rc::Rc;
 use std::thread;
 
 pub struct Keylogger {
