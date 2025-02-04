@@ -1,5 +1,5 @@
-mod cli_parser;
 mod argus;
+mod cli_parser;
 mod method;
 use argus::Argus;
 
@@ -23,7 +23,8 @@ OPTIONS
     --cap      The buffer capacity needed to be met to handle the keystroke buffer
     --help     Display this message
 
-Refer to: https://github.com/Eth3rna1/argus"#.to_string());
+Refer to: https://github.com/Eth3rna1/argus"#
+                .to_string());
         }
         for (i, arg) in args.iter().enumerate() {
             if arg == "--cap" {
@@ -33,14 +34,13 @@ Refer to: https://github.com/Eth3rna1/argus"#.to_string());
                 let value = &args[i];
                 match value.parse::<usize>() {
                     Ok(n) => unsafe { BUFFER_CAPACITY = n },
-                    Err(msg) => return Err(msg.to_string())
+                    Err(msg) => return Err(msg.to_string()),
                 }
             }
         }
     }
     let method = cli_parser::get_method()?;
-    let mut argus = Argus::new(method)
-        .set_buffer_capacity(unsafe { BUFFER_CAPACITY });
+    let mut argus = Argus::new(method).set_buffer_capacity(unsafe { BUFFER_CAPACITY });
     argus.start();
     Ok(())
 }

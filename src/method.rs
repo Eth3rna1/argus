@@ -49,8 +49,14 @@ impl Method {
                 let credentials = Credentials::new(email.to_string(), password.to_string());
                 let smtp_server: String = if email.contains("@gmail.com") {
                     "smtp.gmail.com".to_string()
-                } else if email.contains("@outlook.com") {
+                } else if email.contains("@outlook.com") || email.contains("@hotmail.com") {
                     "smtp-mail.outlook.com".to_string()
+                } else if email.contains("@zoho.com") {
+                    "smtp.zoho.com".to_string()
+                } else if email.contains("@yahoo.com") {
+                    "smtp.mail.yahoo.com".to_string()
+                } else if email.contains("@yandex.com") {
+                    "smtp.yandex.com".to_string()
                 } else {
                     return Err(Error::new(
                         ErrorKind::Other,

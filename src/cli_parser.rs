@@ -6,10 +6,10 @@ use crate::method::Method;
 use std::env;
 use std::process::exit;
 
-pub fn get_env_var(var : &str) -> Result<String, String> {
+pub fn get_env_var(var: &str) -> Result<String, String> {
     match env::var(var) {
         Ok(v) => Ok(v),
-        Err(_) => Err(format!("Environment variable \"{}\" was not set.", var))
+        Err(_) => Err(format!("Environment variable \"{}\" was not set.", var)),
     }
 }
 
@@ -28,12 +28,16 @@ pub fn get_method() -> Result<Method, String> {
             let email = get_env_var("EMAIL")?;
             let password = get_env_var("PASSWORD")?;
             let recipient = get_env_var("RECIPIENT")?;
-            Ok(Method::Email { email, password, recipient })
-        },
+            Ok(Method::Email {
+                email,
+                password,
+                recipient,
+            })
+        }
         "file" => {
             let path = get_env_var("PATH")?;
             Ok(Method::File { path })
         }
-        _ => return Err("Not a supported method".to_string())
+        _ => return Err("Not a supported method".to_string()),
     }
 }

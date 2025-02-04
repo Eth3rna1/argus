@@ -1,11 +1,6 @@
 use crate::method::Method;
 
-use rdev::{
-    listen,
-    Event,
-    EventType::KeyPress,
-    Key::Backspace,
-};
+use rdev::{listen, Event, EventType::KeyPress, Key::Backspace};
 
 use std::sync::Arc;
 use std::sync::RwLock;
@@ -54,7 +49,11 @@ impl Argus {
                     let buffer_clone = buffer.clone();
                     let method_clone = method.clone();
                     let _ = thread::spawn(move || {
-                        method_clone.write().unwrap().handle(&buffer_clone).expect("Failed to handle buffer");
+                        method_clone
+                            .write()
+                            .unwrap()
+                            .handle(&buffer_clone)
+                            .expect("Failed to handle buffer");
                     });
                     buffer.clear();
                     return;
