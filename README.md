@@ -1,7 +1,7 @@
 # Keylogger in Rust
 
 ## About
-The Rust binary `Argus` is a keylogger that refers to Argus Panoptes, the all-seeing giant in Greek mythology with many eyes, emphasizing vigilance. The keylogger records keystrokes by memoizing them into a buffer set with capacity constraint that when met, the keystrokes are passed onto a handle function that either saves the strokes onto a file or sends them out through email depending on the specified preference.
+The Rust binary `Argus` is a keylogger that refers to Argus Panoptes, the all-seeing giant in Greek mythology with many eyes, emphasizing vigilance. The keylogger records keystrokes by memoizing them into a buffer set with capacity constraint that when met, the keystrokes are passed onto a handle function that either saves the strokes onto a file or sends them out through email depending on the specified preference. **The default `buffer capacity` is `100` characters long**
 
 ## Examples
 Initializing Argus to write the keystrokes into a file.
