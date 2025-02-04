@@ -12,13 +12,13 @@ use std::sync::RwLock;
 
 use std::thread;
 
-pub struct Keylogger {
+pub struct Argus {
     method: Arc<RwLock<Method>>,
     buffer: Arc<RwLock<Vec<String>>>,
     buffer_capacity: Arc<RwLock<usize>>,
 }
 
-impl Keylogger {
+impl Argus {
     pub fn new(method: Method) -> Self {
         Self {
             method: Arc::new(RwLock::new(method)),
