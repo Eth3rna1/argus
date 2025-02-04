@@ -13,8 +13,12 @@ pub fn get_env_var(var : &str) -> Result<String, String> {
     }
 }
 
+pub fn get_args() -> Vec<String> {
+    env::args().collect()
+}
+
 pub fn get_method() -> Result<Method, String> {
-    let args: Vec<String> = env::args().collect();
+    let args = get_args();
     if args.len() <= 1 {
         eprintln!("Please provide a method. [file | email]");
         exit(1);
