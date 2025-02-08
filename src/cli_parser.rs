@@ -1,5 +1,5 @@
 /*
-    Setting up the use of environment variables and command line arguments
+    CLI parser and makes sure the environment variables are set up correctly
 */
 use crate::method::Method;
 

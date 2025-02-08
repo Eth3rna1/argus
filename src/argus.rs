@@ -27,7 +27,7 @@ impl Argus {
         self
     }
 
-    pub fn start(&mut self) {
+    pub fn start(&mut self, log: bool) {
         let buffer = self.buffer.clone();
         let method = self.method.clone();
         let buffer_cap = self.buffer_capacity.clone();
@@ -42,9 +42,9 @@ impl Argus {
             if let Some(name) = event.name {
                 //let mut buffer: Vec<String> = buffer.to_vec();
                 let buffer_cap: usize = { *buffer_cap.read().unwrap() };
-                {
+                if log {
                     let mut stdout = io::stdout();
-                    write!(stdout, "\r{} / {}    ", buffer.len(), buffer_cap);
+                    write!(stdout, "\r{} / {}    ", buffer.len(), buffer_cap).unwrap();
                     let _ = stdout.flush();
                 }
                 if buffer.len() == buffer_cap {
