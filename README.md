@@ -26,8 +26,8 @@ argus email --cap 200
 
 ### Using optional flags
 
-The `--log` flag prints out the state of the buffer onto the standard output.
-In other words, the program will print out how much many characters are in such buffer
+The `--log` flag prints out the state of the buffer regarding its length onto the standard output.
+In other words, the program will print out how many characters are in such buffer
 before having to handle the keystrokes.
 
 ```console
