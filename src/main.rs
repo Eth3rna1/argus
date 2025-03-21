@@ -8,6 +8,8 @@ use std::process::exit;
 static mut LOG: bool = false;
 static mut BUFFER_CAPACITY: usize = 100;
 
+/// Wrapper function, encapsulates the Result enum
+/// for better error message propagation within the main function
 fn wrapper() -> Result<(), String> {
     let args = cli_parser::get_args();
     {
@@ -21,7 +23,7 @@ ARGUMENTS
 
 OPTIONS
 -------
-    --cap      The buffer capacity needed to be met to handle the keystroke buffer
+    --cap      The buffer capacity needed to be met before handling the keystrokes
     --log      Outputs the current state of the buffer regarding its length before hitting the buffer cap
     --help     Display this message
 

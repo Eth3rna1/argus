@@ -7,6 +7,7 @@ use std::fs::OpenOptions;
 use std::io::Write;
 use std::io::{Error, ErrorKind, Result};
 
+/// Encapsulates both structs into an enum
 pub enum Method {
     File {
         path: String,
@@ -19,6 +20,7 @@ pub enum Method {
 }
 
 impl Method {
+    /// The handle function that handles the memoized keystrokes
     pub fn handle(&self, keys: &[String]) -> Result<()> {
         match self {
             Method::File { path } => {
